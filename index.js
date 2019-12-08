@@ -42,7 +42,14 @@ function pixel2(led, offset) {
 
     // console.log(col.toString(16));
     return col;
+}
 
+function rand(led, offset) {
+    decay = 2;
+    if (Math.random() < 0.95) {
+        return 0;
+    }
+    return rgb(Math.random(), Math.random(), Math.random());
 }
 
 function tallBuilding(led, offset) {
@@ -63,31 +70,39 @@ function greenGoblin(led, offset) {
     return rgb(0.3 * o, 1 * o, 0.5 * o);
 }
 
+function blueGoblin(led, offset) {
+    decay = 0;
+    const x = (led / 8) % 6;
+
+    const o = Math.sin((-offset * 2 * Math.PI) + x * 6);
+
+    return rgb(0.3 * o, 0.8 * o, 1 * o);
+}
+
 function winterLights(led, offset) {
     decay = 2;
     if (Math.random() < 0.95) {
         return 0;
     }
-    if ((led / leds) - offset > 0.1) {
-        // return 0;
-    }
-    // let mod = 0;
-    // let col = 0;
-    // let o = (offset * 2);
-    // if (offset > 0.5) {
-    //     o = 1 - ((offset - 0.5) * 2);
-    // }
-    // let r = led / leds;
-    // let g = 1 - r;
-    // let b = Math.sin(r) * Math.cos(g) * Math.tan(o);
-    // col = blend(r, g, b, 0, 0, 0, Math.cos(o));
-    // col = rgb(Math.random(), Math.random(), Math.random());
     let r = Math.min(Math.random() + 0, 0.8);
     let g = Math.random() + r;
     col = rgb(r, g, 1);
-
     return col;
+}
 
+function winterLights2(led, offset) {
+    decay = 2;
+    if (Math.random() < 0.95) {
+        return 0;
+    }
+    let r = Math.min(Math.random() + 0, 0.8);
+    let g = (Math.random() / 2) + r + 0.5;
+    if (Math.random() > 0.5) {
+        col = rgb(r, g, 1);
+    } else {
+        col = rgb(r, 1, g);
+    }
+    return col;
 }
 
 function render() {
@@ -97,9 +112,10 @@ function render() {
     }
     console.log(offset);
     for (var i = 0; i < leds; ++i) {
+        const val = winterLights(i, offset);
         if (decay) {
             if (pixels[i] === 0) {
-                pixels[i] += greenGoblin(i, offset);
+                pixels[i] += val;
             }
             let v = pixels[i];
             let r = (v & 0xFF0000) >> 16;
@@ -111,7 +127,7 @@ function render() {
             pixels[i] = (parseInt(r) << 16) + (parseInt(g) << 8) + parseInt(b);
             // pixels[i] = Math.max(pixels[i] - 1000, 0);
         } else {
-            pixels[i] = greenGoblin(i, offset);
+            pixels[i] = val;
         }
     }
     ws281x.render(pixels);
