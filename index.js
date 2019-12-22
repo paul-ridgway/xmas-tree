@@ -5,17 +5,17 @@ var ws281x = require('rpi-ws281x');
 
 var leds = 250;
 
-ws281x.configure({ leds, gpio: 12 });
+ws281x.configure({ leds, gpio: 18 });
 
 const step = 0.01;
 let offset = 0;
 var pixels = new Uint32Array(leds);
 
 let decay = 0;
+let loops = 0;
 
 
 function rgb(r, g, b) {
-    // console.log(b);
     r = Math.max(Math.min(r, 1), 0);
     g = Math.max(Math.min(g, 1), 0);
     b = Math.max(Math.min(b, 1), 0);
@@ -90,6 +90,18 @@ function winterLights(led, offset) {
     return col;
 }
 
+function winterLightsNight(led, offset) {
+    decay = 2;
+    if (Math.random() < 0.99) {
+        return 0;
+    }
+    let r = Math.min(Math.random() + 0, 0.8);
+    let g = Math.random() + r;
+    const clamp = 0.35
+    col = rgb(Math.min(r, clamp), Math.min(g, clamp), Math.min(1, clamp));
+    return col;
+}
+
 function winterLights2(led, offset) {
     decay = 2;
     if (Math.random() < 0.95) {
@@ -105,14 +117,39 @@ function winterLights2(led, offset) {
     return col;
 }
 
+function chase(led, offset) {
+    if (led > 220) {
+        decay = 0;
+        return rgb(1, 0.8, 0);
+    }
+    decay = 3;
+    if (parseInt(offset * leds) !== led) {
+        return 0;
+    }
+    const mod = loops % 5;
+    if (mod == 1) {
+        decay = 4;
+        return rgb(0.3, 1, 0.5);
+    } else if (mod === 2) {
+        return rgb(0.3, 0.5, 1);
+    } else if (mod === 3) {
+        return rgb(1, 0.7, 0.5);
+    } else if (mod === 4) {
+        return rgb(1, 0.5, 1);
+    } else {
+        return rgb(0.8, 0.9, 1);
+    }
+}
+
 function render() {
     offset += step;
     while (offset > 1) {
         offset -= 1;
+        ++loops;
     }
     console.log(offset);
     for (var i = 0; i < leds; ++i) {
-        const val = winterLights(i, offset);
+        const val = winterLightsNight(i, offset);
         if (decay) {
             if (pixels[i] === 0) {
                 pixels[i] += val;
