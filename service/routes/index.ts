@@ -1,9 +1,15 @@
-var express = require('express');
-var router = express.Router();
+import * as express from "express";
+import { LedsController } from "../controllers/leds-controller";
+import { Animator } from "../leds/animator";
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+export class Router {
+  private readonly router = express.Router();
 
-module.exports = router;
+  constructor(animator: Animator) {
+    this.router.use("/api/leds", new LedsController(animator)
+      .getRouter());
+  }
+
+  public get = (): express.Router => this.router;
+
+}

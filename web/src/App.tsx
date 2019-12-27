@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { MouseEvent } from 'react';
 import './App.css';
+import Button from 'react-bootstrap/Button';
+import { Lights } from './Lights';
 
-const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export interface AppState {
+  showLights: boolean;
 }
 
-export default App;
+export class App extends React.Component<{}, AppState> {
+
+  constructor(context?: any) {
+    super(context);
+    this.state = { showLights: false };
+  }
+
+  private toggleLights = (event: MouseEvent<HTMLButtonElement>): void => {
+    this.setState({ showLights: !this.state.showLights });
+  }
+
+  render = () => (
+    <>
+      <Button onClick={this.toggleLights}>{this.state.showLights ? "Hide" : "Show"} Lights</Button>
+      {this.state.showLights &&
+        <>
+          <br />
+          <Lights />
+        </>
+      }
+    </>
+  );
+}
