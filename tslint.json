@@ -1,0 +1,32 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+      "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+      "no-constant-condition": true,
+      "ter-indent": [
+        true,
+        2
+      ],
+      "only-arrow-functions": [true],
+      "no-floating-promises": true,
+      "max-classes-per-file": [true, 5],
+      "arrow-parens": true,
+      "typedef": [
+        true,
+        "call-signature",
+        "arrow-call-signature",
+        "parameter",
+        "property-declaration"
+      ],
+      "arrow-return-shorthand": true,
+      "curly": true,
+      "await-promise": true
+    },
+    "rulesDirectory": [
+      "node_modules/tslint-eslint-rules/dist/rules"
+    ]
+  }
+  

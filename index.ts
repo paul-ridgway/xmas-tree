@@ -15,16 +15,16 @@ let decay = 0;
 let loops = 0;
 
 
-function rgb(r, g, b) {
+function rgb(r: number, g: number, b: number) {
     r = Math.max(Math.min(r, 1), 0);
     g = Math.max(Math.min(g, 1), 0);
     b = Math.max(Math.min(b, 1), 0);
-    return (parseInt(r * 255) << 16) + (parseInt(g * 255) << 8) + parseInt(b * 255)
+    return (Math.round(r * 255) << 16) + (Math.round(g * 255) << 8) + Math.round(b * 255)
 }
 
 function blend(r1, g1, b1, r2, g2, b2, mix) {
     mix = Math.max(Math.min(mix, 1), 0);
-    imix = 1 - mix;
+    const imix = 1 - mix;
     return rgb((r1 * mix) + (r2 * imix), (g1 * mix) + (g2 * imix), (b1 * mix) + (b2 * imix));
 }
 
@@ -86,7 +86,8 @@ function winterLights(led, offset) {
     }
     let r = Math.min(Math.random() + 0, 0.8);
     let g = Math.random() + r;
-    col = rgb(r, g, 1);
+    const col = rgb(r, g, 1);
+    // col = rgb(g, 1, g);
     return col;
 }
 
@@ -98,7 +99,7 @@ function winterLightsNight(led, offset) {
     let r = Math.min(Math.random() + 0, 0.8);
     let g = Math.random() + r;
     const clamp = 0.35
-    col = rgb(Math.min(r, clamp), Math.min(g, clamp), Math.min(1, clamp));
+    const col = rgb(Math.min(r, clamp), Math.min(g, clamp), Math.min(1, clamp));
     return col;
 }
 
@@ -109,6 +110,7 @@ function winterLights2(led, offset) {
     }
     let r = Math.min(Math.random() + 0, 0.8);
     let g = (Math.random() / 2) + r + 0.5;
+    let col;
     if (Math.random() > 0.5) {
         col = rgb(r, g, 1);
     } else {
@@ -123,7 +125,7 @@ function chase(led, offset) {
         return rgb(1, 0.8, 0);
     }
     decay = 3;
-    if (parseInt(offset * leds) !== led) {
+    if (Math.round(offset * leds) !== led) {
         return 0;
     }
     const mod = loops % 5;
@@ -147,9 +149,9 @@ function render() {
         offset -= 1;
         ++loops;
     }
-    console.log(offset);
+    // console.log(offset);
     for (var i = 0; i < leds; ++i) {
-        const val = winterLightsNight(i, offset);
+        const val = winterLights(i, offset);
         if (decay) {
             if (pixels[i] === 0) {
                 pixels[i] += val;
@@ -161,7 +163,7 @@ function render() {
             r = Math.max(0, r - decay);
             g = Math.max(0, g - decay);
             b = Math.max(0, b - decay);
-            pixels[i] = (parseInt(r) << 16) + (parseInt(g) << 8) + parseInt(b);
+            pixels[i] = (Math.round(r) << 16) + (Math.round(g) << 8) + Math.round(b);
             // pixels[i] = Math.max(pixels[i] - 1000, 0);
         } else {
             pixels[i] = val;
