@@ -1,6 +1,9 @@
 import { WinterLights } from "./scenes/winter-lights";
 import { Scene } from "./scene";
 import { TallBuilding } from "./scenes/tall-building";
+import { GreenGoblin } from "./scenes/green-goblin";
+import { BlueGoblin } from "./scenes/blue-goblin";
+import { Random } from "./scenes/random";
 
 type SceneConstructor<T extends Scene> = new () => T;
 
@@ -15,6 +18,9 @@ export class Scenes {
   constructor(private leds: number) {
     this.registerScene(WinterLights);
     this.registerScene(TallBuilding);
+    this.registerScene(GreenGoblin);
+    this.registerScene(BlueGoblin);
+    this.registerScene(Random);
     this.leds * 2; // TODO: Remove
   }
 
