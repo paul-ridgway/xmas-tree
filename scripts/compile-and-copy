@@ -25,5 +25,6 @@ rsync -ah --progress --delete --exclude-from=".git/ignores.tmp" . $HOST:$DIR
 
 echo "Clean up..."
 rm ./service/**/*.js
+rm ./shared/**/*.js
 
 exit 0
