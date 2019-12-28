@@ -12,6 +12,6 @@
         "target": "es2017"
     },
     "include": [
-        "src/**/*"
+        "service/**/*"
     ]
 }

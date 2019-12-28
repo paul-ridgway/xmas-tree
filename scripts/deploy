@@ -1,0 +1,48 @@
+#!/bin/bash
+set -e
+
+#Ensure in scripts directory
+cd $( dirname "${BASH_SOURCE[0]}" )/..
+
+VERSION=$(git describe --tags --always)
+
+echo "Version: $VERSION"
+
+if [[ -z "${HOST}" ]]; then
+    HOST=pi-treex
+fi
+DIR=/home/pi/tree
+
+echo "Host: $HOST"
+
+echo "Stopping service..."
+RESULT=$(ssh $HOST "supervisorctl stop lights")
+if [[ $RESULT = *"ERROR"* ]]; then
+    echo "Error stopping service! - $RESULT"
+	read -p "Do you want to continue? " -n 1 -r
+	echo    # (optional) move to a new line
+	if [[ ! $REPLY =~ ^[Yy]$ ]]
+	then
+	    [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # handle exits from shell or function but don't exit interactive shell
+	fi
+fi
+
+HOST=$host ./scripts/compile-and-copy
+
+echo "Setting ownership..."
+ssh $HOST "sudo chown pi:pi $DIR /home/pi -Rf"
+
+echo "Installing requirements..."
+ssh $HOST "cd $DIR && yarn install --production"
+
+# echo "Adding version"
+# ssh $HOST "echo '$(echo "module.exports = \"$VERSION\";")' > $DIR/src/version.js"
+
+echo "Starting service..."
+RESULT=$(ssh $HOST "supervisorctl start lights")
+if [[ $RESULT = *"ERROR"* ]]; then
+    echo "Error starting service! - $RESULT"
+    exit -1
+fi
+
+exit 0

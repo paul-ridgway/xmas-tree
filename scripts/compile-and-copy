@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e
+
+#Ensure in scripts directory
+cd $( dirname "${BASH_SOURCE[0]}" )/..
+
+if [[ -z "${HOST}" ]]; then
+    HOST=pi-tree
+fi
+DIR=/home/pi/tree
+
+
+echo "Building web app..."
+cd web
+npm run build
+cd ..
+
+echo "Compiling..."
+npx tsc
+
+echo "Copying files to $HOST..."
+git -C . ls-files --exclude-standard -oi --directory | grep -vE 'src/.*\.js' | grep -vE 'web/build' >.git/ignores.tmp
+echo .git >> .git/ignores.tmp 
+rsync -ah --progress --delete --exclude-from=".git/ignores.tmp" . $HOST:$DIR
+
+echo "Clean up..."
+rm ./service/**/*.js
+
+exit 0

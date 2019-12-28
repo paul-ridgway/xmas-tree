@@ -8,7 +8,7 @@ export class WinterLights extends Scene {
     this.setDecay(2);
   }
 
-  valueFor = (led, offset): RGB => {
+  valueFor = (led: number, offset: number): RGB => {
     if (Math.random() < 0.95) {
       return { r: 0, g: 0, b: 0};
     }

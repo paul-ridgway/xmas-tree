@@ -4,127 +4,116 @@ import { getIO, IIO } from "../utils/io/io-provider";
 import { LED, RGB } from "./led";
 import { LedStrip } from "./led-strip";
 import { WinterLights } from "./scenes/winter-lights";
-
-console.log("Tree!");
+import { Scene } from "./scene";
 
 const leds = 250;
 const gpio = 18;
 
 const step = 0.01;
 let offset = 0;
-let loops = 0;
 
-function blend(r1, g1, b1, r2, g2, b2, mix): LED {
-  mix = Math.max(Math.min(mix, 1), 0);
-  const imix = 1 - mix;
-  return new LED(
-    r1 * mix + r2 * imix,
-    g1 * mix + g2 * imix,
-    b1 * mix + b2 * imix
-  );
-}
+// function blend(r1, g1, b1, r2, g2, b2, mix): LED {
+//   mix = Math.max(Math.min(mix, 1), 0);
+//   const imix = 1 - mix;
+//   return new LED(
+//     r1 * mix + r2 * imix,
+//     g1 * mix + g2 * imix,
+//     b1 * mix + b2 * imix
+//   );
+// }
 
-function pixel2(led, offset): LED {
-  let o = offset * 2;
-  if (offset > 0.5) {
-    o = 1 - (offset - 0.5) * 2;
-  }
-  let r = led / leds;
-  let g = 1 - r;
-  let b = Math.sin(r) * Math.cos(g) * Math.tan(o);
-  return blend(r, g, b, 0, 0, 0, Math.cos(o));
-}
+// function pixel2(led, offset): LED {
+//   let o = offset * 2;
+//   if (offset > 0.5) {
+//     o = 1 - (offset - 0.5) * 2;
+//   }
+//   let r = led / leds;
+//   let g = 1 - r;
+//   let b = Math.sin(r) * Math.cos(g) * Math.tan(o);
+//   return blend(r, g, b, 0, 0, 0, Math.cos(o));
+// }
 
-function rand(led, offset): LED {
-  decay = 2;
-  if (Math.random() < 0.95) {
-    return new LED();
-  }
-  return new LED(Math.random(), Math.random(), Math.random());
-}
+// function rand(led, offset): LED {
+//   decay = 2;
+//   if (Math.random() < 0.95) {
+//     return new LED();
+//   }
+//   return new LED(Math.random(), Math.random(), Math.random());
+// }
 
-function tallBuilding(led, offset): LED {
-  decay = 20;
-  if (led < 220 || offset < 0.7 || (offset > 0.8 && offset < 0.9)) {
-    return new LED();
-  }
+// function greenGoblin(led, offset): RGB {
+//   decay = 0;
+//   const x = (led / 8) % 6;
 
-  return new LED(1, 0, 0);
-}
+//   const o = Math.sin(-offset * 2 * Math.PI + x * 6);
 
-function greenGoblin(led, offset): RGB {
-  decay = 0;
-  const x = (led / 8) % 6;
+//   return {r: 0.3 * o, g: 1 * o, b: 0.5 * o};
+// }
 
-  const o = Math.sin(-offset * 2 * Math.PI + x * 6);
+// function blueGoblin(led, offset) {
+//   decay = 0;
+//   const x = (led / 8) % 6;
 
-  return {r: 0.3 * o, g: 1 * o, b: 0.5 * o};
-}
+//   const o = Math.sin(-offset * 2 * Math.PI + x * 6);
 
-function blueGoblin(led, offset) {
-  decay = 0;
-  const x = (led / 8) % 6;
+//   return new LED(0.3 * o, 0.8 * o, 1 * o);
+// }
 
-  const o = Math.sin(-offset * 2 * Math.PI + x * 6);
+// function winterLightsNight(led, offset) {
+//   decay = 2;
+//   if (Math.random() < 0.99) {
+//     return 0;
+//   }
+//   let r = Math.min(Math.random() + 0, 0.8);
+//   let g = Math.random() + r;
+//   const clamp = 0.35;
+//   const col = new LED(
+//     Math.min(r, clamp),
+//     Math.min(g, clamp),
+//     Math.min(1, clamp)
+//   );
+//   return col;
+// }
 
-  return new LED(0.3 * o, 0.8 * o, 1 * o);
-}
+// function winterLights2(led, offset) {
+//   decay = 2;
+//   if (Math.random() < 0.95) {
+//     return 0;
+//   }
+//   let r = Math.min(Math.random() + 0, 0.8);
+//   let g = Math.random() / 2 + r + 0.5;
+//   let col;
+//   if (Math.random() > 0.5) {
+//     col = new LED(r, g, 1);
+//   } else {
+//     col = new LED(r, 1, g);
+//   }
+//   return col;
+// }
 
-function winterLightsNight(led, offset) {
-  decay = 2;
-  if (Math.random() < 0.99) {
-    return 0;
-  }
-  let r = Math.min(Math.random() + 0, 0.8);
-  let g = Math.random() + r;
-  const clamp = 0.35;
-  const col = new LED(
-    Math.min(r, clamp),
-    Math.min(g, clamp),
-    Math.min(1, clamp)
-  );
-  return col;
-}
-
-function winterLights2(led, offset) {
-  decay = 2;
-  if (Math.random() < 0.95) {
-    return 0;
-  }
-  let r = Math.min(Math.random() + 0, 0.8);
-  let g = Math.random() / 2 + r + 0.5;
-  let col;
-  if (Math.random() > 0.5) {
-    col = new LED(r, g, 1);
-  } else {
-    col = new LED(r, 1, g);
-  }
-  return col;
-}
-
-function chase(led, offset) {
-  if (led > 220) {
-    decay = 0;
-    return new LED(1, 0.8, 0);
-  }
-  decay = 3;
-  if (Math.round(offset * leds) !== led) {
-    return 0;
-  }
-  const mod = loops % 5;
-  if (mod == 1) {
-    decay = 4;
-    return new LED(0.3, 1, 0.5);
-  } else if (mod === 2) {
-    return new LED(0.3, 0.5, 1);
-  } else if (mod === 3) {
-    return new LED(1, 0.7, 0.5);
-  } else if (mod === 4) {
-    return new LED(1, 0.5, 1);
-  } else {
-    return new LED(0.8, 0.9, 1);
-  }
-}
+// function chase(led, offset) {
+//   if (led > 220) {
+//     decay = 0;
+//     return new LED(1, 0.8, 0);
+//   }
+//   decay = 3;
+//   if (Math.round(offset * leds) !== led) {
+//     return 0;
+//   }
+//   const mod = loops % 5;
+//   if (mod == 1) {
+//     decay = 4;
+//     return new LED(0.3, 1, 0.5);
+//   } else if (mod === 2) {
+//     return new LED(0.3, 0.5, 1);
+//   } else if (mod === 3) {
+//     return new LED(1, 0.7, 0.5);
+//   } else if (mod === 4) {
+//     return new LED(1, 0.5, 1);
+//   } else {
+//     return new LED(0.8, 0.9, 1);
+//   }
+// }
 
 export class Animator {
   private renderTimer?: NodeJS.Timer;
@@ -139,11 +128,16 @@ export class Animator {
 
   public getLedStrip = (): LedStrip => this.ledStrip;
 
+  public getScene = (): Scene => this.scene;
+
+  public setScene = (scene: Scene): void => {
+    this.scene = scene;
+  }
+
   public render = () => {
     offset += step;
     while (offset > 1) {
       offset -= 1;
-      ++loops;
     }
     // console.log(offset);
     for (var i = 0; i < leds; ++i) {
