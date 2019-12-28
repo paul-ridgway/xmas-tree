@@ -3,7 +3,9 @@ import { RGB } from "./led";
 export abstract class Scene {
   private decay = 0;
 
-  constructor(private name: string) {}
+  protected constructor(private name: string) {
+    
+  }
 
   abstract valueFor(led: number, offset: number): RGB;
 
