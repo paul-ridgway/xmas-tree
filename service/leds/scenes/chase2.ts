@@ -28,9 +28,9 @@ export class Chase2 extends Scene {
 
   valueFor = (led: number, offset: number, loops: number): RGB => {
     
-    if (led > 220) {
+    if ((offset * this.getLeds()) > 220 && led > 220) {
       this.setDecay(0);
-      return this.colForLoops(loops - 1);
+      return this.colForLoops(loops);
     }
     this.setDecay(3);
     if (Math.round(offset * this.getLeds()) !== led) {
