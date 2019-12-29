@@ -1,6 +1,6 @@
-import React, { FormEventHandler, FormEvent } from 'react';
+import React, { FormEvent } from 'react';
 import './App.css';
-import { Form, Col, Row, Button, FormControl } from 'react-bootstrap';
+import { Form, Col, Row } from 'react-bootstrap';
 
 export interface SceneSelectState {
   sceneNames: string[];

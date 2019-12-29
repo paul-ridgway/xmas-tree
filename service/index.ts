@@ -7,6 +7,7 @@ import { Animator } from "./leds/animator";
 import { normalizePort } from "./utils/port-utils";
 import { WebApp } from "./webapp";
 import { Scenes } from "./leds/scenes";
+import { ApiClient } from "../web/src/util/api-client"
 
 const logger = createLogger("server");
 
@@ -79,4 +80,9 @@ server.on("error", onError);
 server.on("listening", onListening);
 
 // Start Listening
-server.listen(port);
+// server.listen(port);
+
+
+const ac = new ApiClient();
+const l = ac.ledsApi();
+console.log(l.currentScene());
