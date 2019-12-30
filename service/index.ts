@@ -6,6 +6,7 @@ import { isPi } from "../shared/utils/detect-rpi";
 import { Animator } from "./leds/animator";
 import { normalizePort } from "./utils/port-utils";
 import { WebApp } from "./webapp";
+import { Scenes } from "./leds/scenes";
 
 const logger = createLogger("server");
 
@@ -63,11 +64,13 @@ logger.info("Server starting...");
 // Print Info
 processInfo();
 
-const animator = new Animator(250);
+const leds = 250;
+const animator = new Animator(leds);
+const scenes = new Scenes(leds);
 
 // Create web app
 const port = normalizePort(process.env.PORT || "8080");
-const app = new WebApp(animator);
+const app = new WebApp(animator, scenes);
 app.getApp().set("port", port);
 
 // Create server

@@ -6,13 +6,14 @@ import expressLogger from "../shared/utils/express-logger";
 
 import path = require("path");
 import { Animator } from "./leds/animator";
+import { Scenes } from "./leds/scenes";
 
 export class WebApp {
 
   private readonly webapp = express();
 
-  constructor(animator: Animator) {
-    const router = new Router(animator);
+  constructor(animator: Animator, scenes: Scenes) {
+    const router = new Router(animator, scenes);
 
     this.webapp.use(expressLogger);
     this.webapp.use(express.json());
