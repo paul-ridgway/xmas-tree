@@ -24,6 +24,7 @@ export class SceneSelect extends React.Component<{}, SceneSelectState> {
     fetch("/api/leds/currentscene", { method: "POST" })
       .then((res) => res.json())
       .then((res) => {
+        console.log(res);
         this.setState({ currentScene: res.name });
       });
   }
@@ -51,7 +52,7 @@ export class SceneSelect extends React.Component<{}, SceneSelectState> {
         <Form.Group as={Row}>
           <Form.Label column sm={2}>Scenes</Form.Label>
           <Col sm={10}>
-            <Form.Control as="select" onChange={this.changeScene} defaultValue={this.state.currentScene}>
+            <Form.Control as="select" onChange={this.changeScene} value={this.state.currentScene}>
               {this.state.sceneNames.map((name, index) => <option key={index} value={name}>{name}</option>)}
             </Form.Control>
           </Col>

@@ -8,6 +8,9 @@ import { Chase } from "./scenes/chase";
 import { Chase2 } from "./scenes/chase2";
 import { WinterLightsNight } from "./scenes/winter-lights-night";
 import { WinterLights2 } from "./scenes/winter-lights-2";
+import { Xmas1 } from "./scenes/xmas-1";
+import { Xmas2 } from "./scenes/xmas-2";
+import { XmasSolid } from "./scenes/xmas-solid";
 
 type SceneConstructor<T extends Scene> = new () => T;
 
@@ -29,6 +32,9 @@ export class Scenes {
     this.registerScene(Random);
     this.registerScene(Chase);
     this.registerScene(Chase2);
+    this.registerScene(Xmas1);
+    this.registerScene(Xmas2);
+    this.registerScene(XmasSolid);
   }
 
   public sceneNames = (): string[] => Object.keys(this.scenes);
