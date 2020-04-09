@@ -5,31 +5,15 @@ export class Chase extends Scene {
 
   constructor() {
     super("Chase");
-    this.setDecay(2);
+    this.setDecay(5);
   }
 
   valueFor = (led: number, offset: number, loops: number): RGB => {
-    if (led > 220) {
-      this.setDecay(0);
-      return this.rgb(1, 0.8, 0);
+    if (led % 27 === Math.floor(offset * 27)) {
+      return this.rgb(1,1,1);
     }
-    this.setDecay(3);
-    if (Math.round(offset * this.getLeds()) !== led) {
-      return this.blank();
-    }
-    const mod = loops % 5;
-    if (mod == 1) {
-      this.setDecay(4);
-      return this.rgb(0.3, 1, 0.5);
-    } else if (mod === 2) {
-      return this.rgb(0.3, 0.5, 1);
-    } else if (mod === 3) {
-      return this.rgb(1, 0.7, 0.5);
-    } else if (mod === 4) {
-      return this.rgb(1, 0.5, 1);
-    } else {
-      return this.rgb(0.8, 0.9, 1);
-    }
+
+    return this.blank();
   }
 
 }

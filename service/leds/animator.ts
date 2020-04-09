@@ -20,14 +20,32 @@ export class Animator {
 
   constructor(private length: number) {
     this.io = getIO(length, gpio);
-    this.ledStrip = new LedStrip(length, this.io);
+    
+    const pixMap = new Uint16Array(length);
+    const width = 27;
+    for(var i = 0; i < length; ++i) {
+      var j = i;
+      if (Math.floor(i / width) % 2 == 1) {
+        const mod = i % width;
+        j = (width - 1) + (i - mod) - mod;
+      }
+      if (j >= length) {
+        throw new Error(`Out of range: ${j}`);
+      }
+      pixMap[i] = j;
+    }
+
+    this.ledStrip = new LedStrip(length, this.io, pixMap);
   }
 
   public getLedStrip = (): LedStrip => this.ledStrip;
 
   public getScene = (): Scene => this.scene;
 
-  public setScene = (scene: Scene): void => {
+  public setScene = (scene: Scene, reset: boolean = false): void => {
+    if (reset) {
+      this.ledStrip.reset();
+    }
     this.scene = scene;
   }
 

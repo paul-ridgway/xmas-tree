@@ -13,6 +13,7 @@ import { Xmas2 } from "./scenes/xmas-2";
 import { Xmas3 } from "./scenes/xmas-3";
 import { Xmas4 } from "./scenes/xmas-4";
 import { XmasSolid } from "./scenes/xmas-solid";
+import { WhiteSolid } from "./scenes/white-solid";
 
 type SceneConstructor<T extends Scene> = new () => T;
 
@@ -39,6 +40,7 @@ export class Scenes {
     this.registerScene(Xmas3);
     this.registerScene(Xmas4);
     this.registerScene(XmasSolid);
+    this.registerScene(WhiteSolid);
   }
 
   public sceneNames = (): string[] => Object.keys(this.scenes);

@@ -5,11 +5,17 @@ export class LedStrip {
   private readonly leds: LED[];
   private readonly pixels: Uint32Array;
 
-  constructor(private length: number, private io: IIO) {
+  constructor(private length: number, private io: IIO, private readonly pixelMap: Uint16Array) {
     this.leds = new Array(length);
     this.pixels = new Uint32Array(length);
     for (let i = 0; i < this.length; i++) {
       this.leds[i] = new LED();
+    }
+  }
+
+  public reset = (): void => {
+    for (let i = 0; i < this.length; i++) {
+      this.get(i).set({r: 0, g: 0, b: 0});
     }
   }
 
@@ -26,9 +32,10 @@ export class LedStrip {
     return this.leds[index];
   }
 
-  public toArray = (): Uint32Array => {
+  public toArray = (forWeb:boolean = false): Uint32Array => {
     for (let index = 0; index < this.length; index++) {
-      const led = this.leds[index];
+      const i = forWeb ? index : this.pixelMap[index];
+      const led = this.leds[i];
       this.pixels[index] = led.toInt32();
     }
     return this.pixels;

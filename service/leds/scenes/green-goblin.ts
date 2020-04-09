@@ -9,7 +9,7 @@ export class GreenGoblin extends Scene {
   }
 
   valueFor = (led: number, offset: number): RGB => {
-    const x = (led / 8) % 6;
+    const x = (led / 27) % 27;
     const o = Math.sin(-offset * 2 * Math.PI + x * 6);
     return { r: 0.3 * o, g: 1 * o, b: 0.5 * o };
   }
