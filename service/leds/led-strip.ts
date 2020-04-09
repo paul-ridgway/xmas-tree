@@ -35,7 +35,7 @@ export class LedStrip {
   public toArray = (forWeb:boolean = false): Uint32Array => {
     for (let index = 0; index < this.length; index++) {
       const i = forWeb ? index : this.pixelMap[index];
-      const led = this.leds[i];
+      const led = this.leds[this.length - i - 1];
       this.pixels[index] = led.toInt32();
     }
     return this.pixels;

@@ -18,6 +18,7 @@ import { Blank } from "./scenes/blank";
 import { Rainbow } from "./scenes/rainbow";
 import { Rainbow2 } from "./scenes/rainbow2";
 import { Rainbow3 } from "./scenes/rainbow3";
+import { Nhs } from "./scenes/nhs";
 
 type SceneConstructor<T extends Scene> = new () => T;
 
@@ -34,6 +35,7 @@ export class Scenes {
     this.registerScene(Rainbow);
     this.registerScene(Rainbow2);
     this.registerScene(Rainbow3);
+    this.registerScene(Nhs);
     this.registerScene(WinterLights);
     this.registerScene(WinterLights2);
     this.registerScene(WinterLightsNight);
