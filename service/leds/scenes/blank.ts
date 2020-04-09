@@ -1,17 +1,13 @@
 import { Scene } from "../scene";
 import { RGB } from "../led";
 
-export class WhiteSolid extends Scene {
+export class Blank extends Scene {
   constructor() {
-    super("WhiteSolid");
+    super("Blank");
     this.setDecay(0);
   }
 
   valueFor = (led: number, offset: number): RGB => {
-    const rgb: RGB = { r: 0, g: 0, b: 0 };
-    rgb.r = 0;
-    rgb.g = 0;
-    rgb.b = 1;
-    return rgb;
+    return this.blank();
   };
 }

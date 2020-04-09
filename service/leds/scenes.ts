@@ -14,6 +14,7 @@ import { Xmas3 } from "./scenes/xmas-3";
 import { Xmas4 } from "./scenes/xmas-4";
 import { XmasSolid } from "./scenes/xmas-solid";
 import { WhiteSolid } from "./scenes/white-solid";
+import { Blank } from "./scenes/blank";
 
 type SceneConstructor<T extends Scene> = new () => T;
 
@@ -26,6 +27,7 @@ export class Scenes {
   private readonly scenes: SceneStore = {};
 
   constructor(private leds: number) {
+    this.registerScene(Blank);
     this.registerScene(WinterLights);
     this.registerScene(WinterLights2);
     this.registerScene(WinterLightsNight);
