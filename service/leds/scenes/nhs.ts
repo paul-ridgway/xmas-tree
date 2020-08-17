@@ -22,7 +22,7 @@ export class Nhs extends Scene {
     const r = (this.pixels[off] / 256.0) * a;
     const g = (this.pixels[off + 1] / 256.0) * a;
     const b = (this.pixels[off + 2] / 256.0) * a;
-    console.log(`r: ${r}, g: ${g}, b: ${b}`);
+    // console.log(`r: ${r}, g: ${g}, b: ${b}`);
     return this.rgb(r, g, b);
   };
 }
