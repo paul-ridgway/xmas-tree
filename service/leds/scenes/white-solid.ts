@@ -9,9 +9,9 @@ export class WhiteSolid extends Scene {
 
   valueFor = (led: number, offset: number): RGB => {
     const rgb: RGB = { r: 0, g: 0, b: 0 };
-    rgb.r = 0;
-    rgb.g = 0;
-    rgb.b = 1;
+    rgb.r = 0.8;
+    rgb.g = 0.8;
+    rgb.b = 0.8;
     return rgb;
   };
 }
