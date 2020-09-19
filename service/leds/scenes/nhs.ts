@@ -4,13 +4,13 @@ import { Scene } from "../scene";
 import { RGB } from "../led";
 
 // 27 x 18
-export class Rainbow extends Scene {
+export class Nhs extends Scene {
   private readonly pixels: Uint8Array;
 
   constructor() {
-    super("Rainbow");
+    super("NHS");
     this.setDecay(0);
-    const buffer = fs.readFileSync("rainbow.png");
+    const buffer = fs.readFileSync("nhs.png");
     const arr = new Uint8Array(buffer);
     const img = PNG.load(arr);
     this.pixels = img.decodePixels();
