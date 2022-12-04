@@ -2,7 +2,7 @@ import { IIO } from "./io-provider";
 
 export class PiIO implements IIO {
   
-  private ws281x = require('rpi-ws281x');
+  private ws281x = require('ws281x-pi4');
 
   constructor(leds: number, gpio: number) {    
     this.ws281x.configure({ leds, gpio });
