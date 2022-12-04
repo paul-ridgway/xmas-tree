@@ -9,7 +9,7 @@ export class TallBuilding extends Scene {
   }
 
   valueFor = (led: number, offset: number): RGB => {
-    if (led < 220 || offset < 0.7 || (offset > 0.8 && offset < 0.9)) {
+    if (led < this.getLeds() - 50 || offset < 0.7 || (offset > 0.8 && offset < 0.9)) {
       return {r: 0, g: 0, b: 0};
     }
   

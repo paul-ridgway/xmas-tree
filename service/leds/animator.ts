@@ -6,7 +6,6 @@ import { LedStrip } from "./led-strip";
 import { WinterLights } from "./scenes/winter-lights";
 import { Scene } from "./scene";
 
-const leds = 250;
 const gpio = 18;
 
 export class Animator {
@@ -19,9 +18,9 @@ export class Animator {
   private offset = 0;
 
 
-  constructor(length: number) {
-    this.io = getIO(leds, gpio);
-    this.ledStrip = new LedStrip(length, this.io);
+  constructor(private _length: number) {
+    this.io = getIO(_length, gpio);
+    this.ledStrip = new LedStrip(_length, this.io);
   }
 
   public getLedStrip = (): LedStrip => this.ledStrip;
@@ -39,7 +38,7 @@ export class Animator {
       this.loops += 1;
     }
     // console.log(offset);
-    for (var i = 0; i < leds; ++i) {
+    for (var i = 0; i < this._length; ++i) {
       const val: RGB = this.scene.valueFor(i, this.offset, this.loops);
       const decay = this.scene.getDecay();
       const led: LED = this.ledStrip.get(i);
