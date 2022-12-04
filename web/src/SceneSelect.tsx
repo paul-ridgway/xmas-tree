@@ -1,4 +1,4 @@
-import React, { FormEventHandler, FormEvent } from 'react';
+import React, { FormEventHandler, FormEvent, ChangeEvent } from 'react';
 import './App.css';
 import { Form, Col, Row, Button, FormControl } from 'react-bootstrap';
 
@@ -30,7 +30,7 @@ export class SceneSelect extends React.Component<{}, SceneSelectState> {
   }
 
 
-  changeScene = (e: FormEvent<HTMLSelectElement>): void => {
+  changeScene = (e: ChangeEvent<HTMLSelectElement>): void => {
     const name = (e.target as any).value;
     fetch("/api/leds/changescene", {
       method: "POST",
