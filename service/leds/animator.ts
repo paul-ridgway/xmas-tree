@@ -3,8 +3,8 @@
 import { getIO, IIO } from "../utils/io/io-provider";
 import { LED, RGB } from "./led";
 import { LedStrip } from "./led-strip";
-import { WinterLights } from "./scenes/winter-lights";
 import { Scene } from "./scene";
+import { Blank } from "./scenes/blank";
 
 const gpio = 18;
 
@@ -12,7 +12,7 @@ export class Animator {
   private renderTimer?: NodeJS.Timer;
   private ledStrip: LedStrip;
   private io: IIO;
-  private scene: Scene = new WinterLights();
+  private scene: Scene = new Blank();
   private loops = 0;
   private readonly step = 0.01;
   private offset = 0;
@@ -20,14 +20,33 @@ export class Animator {
 
   constructor(private _length: number) {
     this.io = getIO(_length, gpio);
-    this.ledStrip = new LedStrip(_length, this.io);
+
+    // Sign remapping
+    const pixMap = new Uint16Array(_length);
+    // const width = 27;
+    for(let i = 0; i < _length; ++i) {
+    //   let j = i;
+    //   if (Math.floor(i / width) % 2 == 1) {
+    //     const mod = i % width;
+    //     j = (width - 1) + (i - mod) - mod;
+    //   }
+    //   if (j >= length) {
+    //     throw new Error(`Out of range: ${j}`);
+    //   }
+      pixMap[i] = j;
+    }
+
+    this.ledStrip = new LedStrip(_length, this.io, pixMap);
   }
 
   public getLedStrip = (): LedStrip => this.ledStrip;
 
   public getScene = (): Scene => this.scene;
 
-  public setScene = (scene: Scene): void => {
+  public setScene = (scene: Scene, reset: boolean = false): void => {
+    if (reset) {
+      this.ledStrip.reset();
+    }
     this.scene = scene;
   }
 

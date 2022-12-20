@@ -50,12 +50,12 @@ export class Lights extends React.Component<{}, LightsState> {
     let x = 0;
     let y = 0;
     if (ctx) {
-      for (const val of this.state.values) {
+      for (const val of this.state.values.reverse()) {
 
         ctx.fillStyle = "#" + this.pad(val.toString(16), 6, "0");;
         ctx.fillRect(x, y, 10, 10);
         x += 12;
-        if (x + 12 >= 640) {
+        if (x + 12 >= (28 * 12)) {
           y += 12;
           x = 0;
         }

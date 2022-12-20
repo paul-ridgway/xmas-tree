@@ -5,7 +5,7 @@ export class Chase extends Scene {
 
   constructor() {
     super("Chase");
-    this.setDecay(2);
+    this.setDecay(5);
   }
 
   valueFor = (led: number, offset: number, loops: number): RGB => {
@@ -30,6 +30,8 @@ export class Chase extends Scene {
     } else {
       return this.rgb(0.8, 0.9, 1);
     }
+
+    return this.blank();
   }
 
 }

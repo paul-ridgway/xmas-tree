@@ -64,7 +64,7 @@ logger.info("Server starting...");
 // Print Info
 processInfo();
 
-const leds = 400;
+const leds = 500;
 const animator = new Animator(leds);
 const scenes = new Scenes(leds);
 

@@ -21,7 +21,7 @@ export class LedsController extends BaseController {
   }
 
   private values = (req: express.Request, res: express.Response): void => {
-    res.send(this.ledStrip.toArray());
+    res.send(this.ledStrip.toArray(true));
   }
 
   private sceneNames = (req: express.Request, res: express.Response): void => {
