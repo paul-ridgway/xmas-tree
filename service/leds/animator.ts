@@ -25,7 +25,7 @@ export class Animator {
     const pixMap = new Uint16Array(_length);
     // const width = 27;
     for(let i = 0; i < _length; ++i) {
-    //   let j = i;
+      let j = i;
     //   if (Math.floor(i / width) % 2 == 1) {
     //     const mod = i % width;
     //     j = (width - 1) + (i - mod) - mod;
