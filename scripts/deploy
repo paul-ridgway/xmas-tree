@@ -9,13 +9,13 @@ VERSION=$(git describe --tags --always)
 echo "Version: $VERSION"
 
 if [[ -z "${HOST}" ]]; then
-    HOST=pi@192.168.1.185
+    HOST=pi@192.168.1.200
 fi
 DIR=/home/pi/tree
 
 echo "Host: $HOST"
 
-HOST=$host ./scripts/compile-and-copy
+./scripts/compile-and-copy
 
 echo "Setting ownership..."
 ssh $HOST "sudo chown pi:pi $DIR /home/pi -Rf"

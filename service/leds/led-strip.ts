@@ -36,7 +36,7 @@ export class LedStrip {
     for (let index = 0; index < this.length; index++) {
       const i = forWeb ? index : this.pixelMap[index];
       const led = this.leds[this.length - i - 1];
-      this.pixels[index] = led.toInt32();
+      this.pixels[index] = led.render();
     }
     return this.pixels;
   };

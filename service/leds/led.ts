@@ -40,6 +40,14 @@ export class LED {
     );
   };
 
+  public render = (): number => {
+    return (
+      (Math.round(this.rgb.b * 255) << 16) +
+      (Math.round(this.rgb.g * 255) << 8) +
+      Math.round(this.rgb.r * 255)
+    );
+  };
+
   private clamp = () => {
     this.rgb.r = Math.max(Math.min(this.rgb.r, 1), 0);
     this.rgb.g = Math.max(Math.min(this.rgb.g, 1), 0);
